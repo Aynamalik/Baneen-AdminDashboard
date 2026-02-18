@@ -1,28 +1,32 @@
-import { Box, Toolbar } from '@mui/material';
 import Header from '../common/Header';
 import Sidebar from '../common/Sidebar';
+import { useSelector } from 'react-redux';
+
+const DRAWER_WIDTH = 240;
 
 const MainLayout = ({ children }) => {
+  const { sidebarOpen } = useSelector((state) => state.ui);
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <div className="flex min-h-screen bg-slate-50">
       <Header />
       <Sidebar />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - 240px)` },
-          minHeight: '100vh',
-          backgroundColor: 'background.default',
+      <main
+        className="flex-1 min-w-0 min-h-screen overflow-auto"
+        style={{
+          marginLeft: sidebarOpen ? DRAWER_WIDTH : 0,
+          paddingTop: 80,
+          paddingRight: 24,
+          paddingBottom: 24,
+          paddingLeft: 24,
+          backgroundColor: '#F8FAFC',
+          transition: 'margin 200ms ease',
         }}
       >
-        <Toolbar />
         {children}
-      </Box>
-    </Box>
+      </main>
+    </div>
   );
 };
 
 export default MainLayout;
-

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button, Container } from '@mui/material';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { MdErrorOutline } from 'react-icons/md';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -24,27 +23,24 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <Container>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            minHeight="100vh"
-            textAlign="center"
-          >
-            <ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main', mb: 2 }} />
-            <Typography variant="h4" component="h1" gutterBottom>
+        <div className="max-w-[1200px] mx-auto px-4">
+          <div className="flex flex-col items-center justify-center min-h-screen text-center">
+            <MdErrorOutline className="w-16 h-16 text-red-500 mb-4" />
+            <h1 className="text-xl font-semibold text-slate-900 m-0 mb-2">
               Something went wrong
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+            </h1>
+            <p className="text-sm text-slate-500 mb-8 max-w-md">
               We're sorry, but something unexpected happened. Please try again.
-            </Typography>
-            <Button variant="contained" onClick={this.handleReset}>
+            </p>
+            <button
+              type="button"
+              onClick={this.handleReset}
+              className="btn-primary px-4 py-2 rounded-md text-sm"
+            >
               Go to Dashboard
-            </Button>
-          </Box>
-        </Container>
+            </button>
+          </div>
+        </div>
       );
     }
 
@@ -53,4 +49,3 @@ class ErrorBoundary extends React.Component {
 }
 
 export default ErrorBoundary;
-

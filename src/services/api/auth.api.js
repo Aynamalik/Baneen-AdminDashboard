@@ -1,11 +1,11 @@
 import apiClient from './client';
 
 export const authApi = {
-  login: (credentials) => apiClient.post('/admin/auth/login', credentials),
-  logout: () => apiClient.post('/admin/auth/logout'),
-  forgotPassword: (email) => apiClient.post('/admin/auth/forgot-password', { email }),
-  resetPassword: (token, password) => apiClient.post('/admin/auth/reset-password', { token, password }),
-  getCurrentUser: () => apiClient.get('/admin/auth/me'),
-  refreshToken: () => apiClient.post('/admin/auth/refresh'),
+  login: (credentials) => apiClient.post('/auth/login', credentials),
+  logout: () => apiClient.post('/auth/logout'),
+  forgotPassword: (phone) => apiClient.post('/auth/forgot-password', { phone }),
+  resetPassword: (token, password) => apiClient.post('/auth/reset-password', { token, password }),
+  getCurrentUser: () => apiClient.get('/auth/me'),
+  refreshToken: () => apiClient.post('/auth/refresh-token'),
 };
 

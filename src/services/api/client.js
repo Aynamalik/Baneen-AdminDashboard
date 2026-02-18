@@ -28,9 +28,22 @@ apiClient.interceptors.request.use(
 // Response interceptor
 apiClient.interceptors.response.use(
   (response) => {
+    // Backend returns { success, message, data }
+    // Return the data property if it exists, otherwise return the full response
+    if (response.data && response.data.data !== undefined) {
+      return response.data.data;
+    }
     return response.data;
   },
   (error) => {
+    // Handle error response from backend
+    const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
+    const errorData = {
+      message: errorMessage,
+      errors: error.response?.data?.errors || null,
+      status: error.response?.status || 500,
+    };
+    
     if (error.response?.status === 401) {
       // Handle unauthorized - clear token and redirect to login
       storage.remove(STORAGE_KEYS.TOKEN);
@@ -39,7 +52,12 @@ apiClient.interceptors.response.use(
         window.location.href = '/login';
       }
     }
-    return Promise.reject(error);
+    
+    // Create a custom error object that includes the backend error message
+    const customError = new Error(errorMessage);
+    customError.response = error.response;
+    customError.data = errorData;
+    return Promise.reject(customError);
   }
 );
 

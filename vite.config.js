@@ -9,10 +9,10 @@ export default defineConfig({
     sourcemap: false,
   },
   server: {
-    port: 3000,
+    port: 5173, // Frontend dev server port (different from backend)
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3000', // Backend server
         changeOrigin: true,
       },
     },

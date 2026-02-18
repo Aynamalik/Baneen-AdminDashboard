@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Prevent MUI CssBaseline from overriding our layout */
+#root { min-height: 100vh; }
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    margin: 0;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212121;
+    background-color: #F8FAFC;
+  }
+}
+
+.btn-gradient, .btn-primary {
+  background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.btn-gradient:hover, .btn-primary:hover {
+  background: linear-gradient(135deg, #C2185B 0%, #7B1FA2 100%);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 40px; height: 40px;
+  border: 2px solid #E0E0E0;
+  border-top-color: #E91E63;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.spinner-sm { width: 20px; height: 20px; border-width: 2px; }
+.spinner-md { width: 24px; height: 24px; border-width: 2px; }

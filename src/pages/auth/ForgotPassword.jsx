@@ -11,16 +11,16 @@ import {
   CircularProgress,
   Link,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import AuthLayout from '../../components/layout/AuthLayout';
 import { authApi } from '../../services/api/auth.api';
 import { ROUTES } from '../../utils/constants';
 
 const schema = yup.object().shape({
-  email: yup
+  phone: yup
     .string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .matches(/^(\+92|92|0)?[3][0-9]{9}$/, 'Please enter a valid Pakistani phone number')
+    .required('Phone number is required'),
 });
 
 const ForgotPassword = () => {
@@ -41,10 +41,10 @@ const ForgotPassword = () => {
     setLoading(true);
     setError(null);
     try {
-      await authApi.forgotPassword(data.email);
+      await authApi.forgotPassword(data.phone);
       setSuccess(true);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to send reset email');
+      setError(err.response?.data?.message || 'Failed to send OTP');
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ const ForgotPassword = () => {
           Forgot Password
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Enter your email to receive a password reset link
+          Enter your phone number to receive a password reset OTP
         </Typography>
       </Box>
 
@@ -70,7 +70,7 @@ const ForgotPassword = () => {
       {success ? (
         <Box>
           <Alert severity="success" sx={{ mb: 2 }}>
-            Password reset link has been sent to your email.
+            Password reset OTP has been sent to your phone number.
           </Alert>
           <Button
             fullWidth
@@ -85,13 +85,14 @@ const ForgotPassword = () => {
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
-            label="Email"
-            type="email"
+            label="Phone Number"
+            type="tel"
             margin="normal"
-            {...register('email')}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            autoComplete="email"
+            {...register('phone')}
+            error={!!errors.phone}
+            helperText={errors.phone?.message}
+            autoComplete="tel"
+            placeholder="03XXXXXXXXX"
           />
 
           <Button
@@ -101,12 +102,13 @@ const ForgotPassword = () => {
             sx={{ mt: 3, mb: 2 }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} /> : 'Send Reset Link'}
+            {loading ? <CircularProgress size={24} /> : 'Send OTP'}
           </Button>
 
           <Box sx={{ textAlign: 'center' }}>
             <Link
-              href={ROUTES.LOGIN}
+              component={RouterLink}
+              to={ROUTES.LOGIN}
               variant="body2"
               sx={{ textDecoration: 'none' }}
             >

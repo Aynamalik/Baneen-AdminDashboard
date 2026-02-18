@@ -13,16 +13,23 @@ import {
   Link,
   CircularProgress,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import AuthLayout from '../../components/layout/AuthLayout';
 import { useAuth } from '../../hooks/useAuth';
 import { ROUTES } from '../../utils/constants';
 
 const schema = yup.object().shape({
-  email: yup
+  emailOrPhone: yup
     .string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .required('Email or phone is required')
+    .test('email-or-phone', 'Must be a valid email or phone number', function(value) {
+      if (!value) return false;
+      // Check if it's an email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      // Check if it's a phone (Pakistani format)
+      const phoneRegex = /^(\+92|92|0)?[0-9]{10}$/;
+      return emailRegex.test(value) || phoneRegex.test(value.replace(/\s+/g, ''));
+    }),
   password: yup
     .string()
     .min(6, 'Password must be at least 6 characters')
@@ -49,7 +56,16 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-    const result = await login(data);
+    // Determine if input is email or phone
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRegex.test(data.emailOrPhone);
+    
+    const credentials = {
+      password: data.password,
+      ...(isEmail ? { email: data.emailOrPhone } : { phone: data.emailOrPhone.replace(/\s+/g, '') }),
+    };
+    
+    const result = await login(credentials);
     if (result.success) {
       navigate(ROUTES.DASHBOARD);
     }
@@ -57,6 +73,18 @@ const Login = () => {
 
   return (
     <AuthLayout>
+      <Box
+        component="img"
+        src="/baneen-logo.png"
+        alt="Baneen - female journeys"
+        sx={{
+          display: 'block',
+          mx: 'auto',
+          mb: 2,
+          height: 150,
+          objectFit: 'contain',
+        }}
+      />
       <Box sx={{ textAlign: 'center', mb: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Welcome Back
@@ -78,10 +106,11 @@ const Login = () => {
           label="Email or Phone"
           type="text"
           margin="normal"
-          {...register('email')}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-          autoComplete="email"
+          {...register('emailOrPhone')}
+          error={!!errors.emailOrPhone}
+          helperText={errors.emailOrPhone?.message || 'Enter your email or phone number'}
+          autoComplete="username"
+          placeholder="admin@example.com or 03001234567"
         />
 
         <TextField
@@ -106,7 +135,8 @@ const Login = () => {
             label="Remember me"
           />
           <Link
-            href={ROUTES.FORGOT_PASSWORD}
+            component={RouterLink}
+            to={ROUTES.FORGOT_PASSWORD}
             variant="body2"
             sx={{ textDecoration: 'none' }}
           >

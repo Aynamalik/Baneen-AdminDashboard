@@ -1,33 +1,30 @@
-import { Box, Typography, Button } from '@mui/material';
-
 const PageHeader = ({ title, subtitle, action, actionLabel }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        mb: 3,
-        flexWrap: 'wrap',
-        gap: 2,
-      }}
-    >
-      <Box>
-        <Typography variant="h4" component="h1" gutterBottom>
+    <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
+      <div>
+        <h1 className="text-3xl font-semibold text-slate-900 tracking-tight m-0 mb-0.5">
           {title}
-        </Typography>
+        </h1>
         {subtitle && (
-          <Typography variant="body2" color="text.secondary">
+          <p className="text-lg text-slate-500 m-0">
             {subtitle}
-          </Typography>
+          </p>
         )}
-      </Box>
-      {action && actionLabel && (
-        <Button variant="contained" onClick={action}>
-          {actionLabel}
-        </Button>
+      </div>
+      {action && (
+        typeof action === 'function'
+          ? actionLabel && (
+              <button
+                type="button"
+                onClick={action}
+                className="btn-primary px-4 py-2 rounded-md text-sm shrink-0"
+              >
+                {actionLabel}
+              </button>
+            )
+          : action
       )}
-    </Box>
+    </div>
   );
 };
 

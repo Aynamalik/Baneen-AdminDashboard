@@ -1,83 +1,27 @@
 import { useState } from 'react';
 import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Badge,
-  Box,
-  Menu,
-  MenuItem,
-  Avatar,
-  InputBase,
-  alpha,
-} from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Notifications as NotificationsIcon,
-  Search as SearchIcon,
-  AccountCircle,
-  Logout,
-} from '@mui/icons-material';
+  MdMenu,
+  MdNotifications,
+  MdSearch,
+  MdAccountCircle,
+  MdLogout,
+} from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../../store/slices/ui.slice';
 import { logout } from '../../store/slices/auth.slice';
 import { useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
+const DRAWER_WIDTH = 240;
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const { sidebarOpen } = useSelector((state) => state.ui);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
+  const handleMenuOpen = () => setAnchorEl(true);
+  const handleMenuClose = () => setAnchorEl(null);
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login');
@@ -85,81 +29,76 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
+    <header
+      className="fixed top-0 h-16 flex items-center flex-nowrap px-4 z-[1101] text-white shadow-md"
+      style={{
+        left: sidebarOpen ? DRAWER_WIDTH : 0,
+        right: 0,
+        background: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)',
+        transition: 'left 200ms ease',
+      }}
+    >
+      <div className="flex items-center w-full min-w-0 flex-nowrap gap-2">
+        <button
+          type="button"
           onClick={() => dispatch(toggleSidebar())}
-          sx={{ mr: 2 }}
+          className="p-2 -ml-1 rounded-lg hover:bg-white/15 shrink-0"
+          aria-label="toggle menu"
         >
-          <MenuIcon />
-        </IconButton>
-        
-        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 0, mr: 2 }}>
-          Baneen Admin
-        </Typography>
-
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
+          <MdMenu className="w-6 h-6" />
+        </button>
+        <span className="text-lg font-semibold shrink-0 whitespace-nowrap">Baneen Admin</span>
+        <div className="hidden sm:flex relative flex-1 max-w-[220px] min-w-0">
+          <MdSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/80 pointer-events-none" />
+          <input
+            type="search"
             placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
+            className="w-full h-9 pl-9 pr-3 bg-white/10 border-0 rounded-lg text-sm text-white placeholder-white/60 focus:bg-white/20 focus:outline-none"
           />
-        </Search>
-
-        <Box sx={{ flexGrow: 1 }} />
-
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-
-        <IconButton
-          size="large"
-          edge="end"
-          aria-label="account of current user"
-          aria-controls="user-menu"
-          aria-haspopup="true"
-          onClick={handleMenuOpen}
-          color="inherit"
-        >
-          <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
-            {user?.name?.charAt(0) || <AccountCircle />}
-          </Avatar>
-        </IconButton>
-
-        <Menu
-          id="user-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-        >
-          <MenuItem onClick={handleMenuClose}>
-            <AccountCircle sx={{ mr: 1 }} />
-            Profile
-          </MenuItem>
-          <MenuItem onClick={handleLogout}>
-            <Logout sx={{ mr: 1 }} />
-            Logout
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
+        </div>
+        <div className="flex-1 min-w-0" />
+        <button className="relative p-2 rounded-lg hover:bg-white/15 shrink-0">
+          <MdNotifications className="w-5 h-5" />
+          <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 flex items-center justify-center text-[10px] font-bold bg-red-500 rounded-full">4</span>
+        </button>
+        <div className="relative shrink-0">
+          <button
+            type="button"
+            onClick={handleMenuOpen}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 shrink-0"
+            aria-label="account menu"
+          >
+            {user?.name?.charAt(0) ? (
+              <span className="text-sm font-semibold">{user.name.charAt(0)}</span>
+            ) : (
+              <MdAccountCircle className="w-6 h-6" />
+            )}
+          </button>
+          {anchorEl && (
+            <>
+              <div className="fixed inset-0 z-[1100]" onClick={handleMenuClose} aria-hidden="true" />
+              <div className="absolute right-0 top-full mt-2 py-1 min-w-[160px] z-[1102] bg-white rounded-lg shadow-xl border border-slate-200">
+                <button
+                  type="button"
+                  onClick={handleMenuClose}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  <MdAccountCircle className="w-4 h-4 shrink-0" /> Profile
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  <MdLogout className="w-4 h-4 shrink-0" /> Logout
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
   );
 };
 
 export default Header;
-
