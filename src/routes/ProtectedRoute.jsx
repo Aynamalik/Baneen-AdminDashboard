@@ -60,7 +60,8 @@ const ProtectedRoute = () => {
     };
 
     verifyAuth();
-  }, [dispatch]); // Remove isAuthenticated from dependencies to avoid infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- isAuthenticated excluded to avoid infinite loop
+  }, [dispatch]);
 
   if (checkingAuth || loading) {
     return (

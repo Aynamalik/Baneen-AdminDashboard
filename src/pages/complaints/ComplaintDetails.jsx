@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
-  Paper,
   Typography,
   Grid,
   Avatar,
@@ -40,7 +39,6 @@ import {
   Apps as AppsIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
-  LocationOn as LocationOnIcon,
   AccessTime as AccessTimeIcon,
   Description as DescriptionIcon,
 } from '@mui/icons-material';

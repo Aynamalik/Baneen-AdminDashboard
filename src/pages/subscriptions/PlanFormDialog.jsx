@@ -8,11 +8,10 @@ import {
   TextField,
   CircularProgress,
 } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { adminApi } from '../../services/api/admin.api';
 
 const PlanFormDialog = ({ open, onClose, plan = null, onSuccess }) => {
-  const queryClient = useQueryClient();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [ridesIncluded, setRidesIncluded] = useState(10);

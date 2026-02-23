@@ -11,13 +11,10 @@ import { toggleSidebar } from '../../store/slices/ui.slice';
 import { logout } from '../../store/slices/auth.slice';
 import { useNavigate } from 'react-router-dom';
 
-const DRAWER_WIDTH = 240;
-
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  const { sidebarOpen } = useSelector((state) => state.ui);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuOpen = () => setAnchorEl(true);
@@ -30,12 +27,9 @@ const Header = () => {
 
   return (
     <header
-      className="fixed top-0 h-16 flex items-center flex-nowrap px-4 z-[1101] text-white shadow-md"
+      className="fixed top-0 left-0 right-0 h-16 flex items-center flex-nowrap px-4 z-[1101] text-white shadow-md"
       style={{
-        left: sidebarOpen ? DRAWER_WIDTH : 0,
-        right: 0,
         background: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)',
-        transition: 'left 200ms ease',
       }}
     >
       <div className="flex items-center w-full min-w-0 flex-nowrap gap-2">

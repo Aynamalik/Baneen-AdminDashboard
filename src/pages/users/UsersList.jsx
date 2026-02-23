@@ -36,7 +36,6 @@ import {
   CheckCircle as CheckCircleIcon,
   Block as BlockIcon,
   Delete as DeleteIcon,
-  Person as PersonIcon,
   Visibility as VisibilityIcon,
   Add as AddIcon,
 } from '@mui/icons-material';

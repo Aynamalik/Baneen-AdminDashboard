@@ -16,7 +16,6 @@ import {
   CircularProgress,
   Card,
   CardContent,
-  Divider,
   Table,
   TableBody,
   TableCell,
@@ -36,8 +35,6 @@ import {
   Phone as PhoneIcon,
   Email as EmailIcon,
   Star as StarIcon,
-  AttachMoney as AttachMoneyIcon,
-  LocationOn as LocationOnIcon,
   CreditCard as CreditCardIcon,
 } from '@mui/icons-material';
 import { ROUTES } from '../../utils/constants';

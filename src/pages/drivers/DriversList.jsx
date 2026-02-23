@@ -79,7 +79,6 @@ const DriversList = () => {
   // Fetch pending drivers
   const {
     data: pendingDriversData,
-    isLoading: pendingLoading,
   } = useQuery({
     queryKey: ['pending-drivers'],
     queryFn: adminApi.getPendingDrivers,

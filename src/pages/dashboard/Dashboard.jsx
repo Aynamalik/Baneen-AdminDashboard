@@ -240,7 +240,7 @@ const Dashboard = () => {
           <Grid item xs={12} md={4}>
             <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
               <Typography variant="h6" gutterBottom>
-                Today's Ride Status
+                Today&apos;s Ride Status
               </Typography>
               <Box sx={{ height: 300, width: '100%' }}>
                 {statsLoading ? (

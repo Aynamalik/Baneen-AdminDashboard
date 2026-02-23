@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginStart, loginSuccess, loginFailure, logout as logoutAction } from '../store/slices/auth.slice';
@@ -9,14 +8,12 @@ export const useAuth = () => {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
-  // Note: Auth check is handled in ProtectedRoute to avoid duplicate calls
 
   const login = async (credentials) => {
     try {
       dispatch(loginStart());
       const response = await authApi.login(credentials);
-      // Response is already extracted from { success, message, data } by interceptor
-      // So response = { user, profile, accessToken, refreshToken }
+    
       const userData = {
         ...response.user,
         name: response.profile?.name || response.user?.email?.split('@')[0] || 'Admin',

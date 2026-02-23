@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Alert,
   CircularProgress,
   Table,
@@ -31,16 +30,12 @@ import { adminApi } from '../../services/api/admin.api';
 import { ROUTES } from '../../utils/constants';
 import {
   ArrowBack as ArrowBackIcon,
-  Edit as EditIcon,
   CheckCircle as CheckCircleIcon,
   Block as BlockIcon,
   Delete as DeleteIcon,
   Person as PersonIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
-  LocationOn as LocationOnIcon,
-  DirectionsCar as DirectionsCarIcon,
-  AttachMoney as AttachMoneyIcon,
   Star as StarIcon,
 } from '@mui/icons-material';
 
@@ -48,10 +43,6 @@ const UserDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [editDialog, setEditDialog] = useState({
-    open: false,
-    user: null,
-  });
   const [confirmDialog, setConfirmDialog] = useState({
     open: false,
     title: '',

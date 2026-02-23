@@ -27,11 +27,9 @@ import { adminApi } from '../../services/api/admin.api';
 import {
   ArrowBack as ArrowBackIcon,
   CheckCircle as CheckCircleIcon,
-  ReportProblem as ReportProblemIcon,
   Person as PersonIcon,
   LocationOn as LocationOnIcon,
   Phone as PhoneIcon,
-  AccessTime as AccessTimeIcon,
   LocalHospital as LocalHospitalIcon,
   LocalPolice as LocalPoliceIcon,
 } from '@mui/icons-material';
@@ -143,7 +141,6 @@ const SOSAlertDetails = () => {
   }
 
   const user = alert.userId;
-  const ride = alert.rideId;
 
   return (
     <>

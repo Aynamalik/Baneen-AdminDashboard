@@ -10,7 +10,6 @@ import {
   Avatar,
   Chip,
   Button,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -42,7 +41,6 @@ import {
   CheckCircle as CheckCircleIcon,
   Call as CallIcon,
   DirectionsCar as DirectionsCarIcon,
-  AccessTime as AccessTimeIcon,
   MyLocation as MyLocationIcon,
 } from '@mui/icons-material';
 
@@ -138,16 +136,6 @@ const ActiveAlerts = () => {
       default:
         return <WarningIcon fontSize="large" />;
     }
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
   };
 
   const getTimeAgo = (dateString) => {

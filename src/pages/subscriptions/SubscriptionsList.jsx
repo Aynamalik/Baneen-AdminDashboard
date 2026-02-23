@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import {
-  Box,
   Paper,
   Table,
+  TablePagination,
   TableBody,
   TableCell,
   TableContainer,
@@ -16,15 +16,12 @@ import {
   IconButton,
 } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/common/PageHeader';
 import { adminApi } from '../../services/api/admin.api';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { ROUTES } from '../../utils/constants';
 import PlanFormDialog from './PlanFormDialog';
 
 const SubscriptionsList = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -46,7 +43,7 @@ const SubscriptionsList = () => {
   });
 
   const plans = data?.plans ?? [];
-  const pagination = data?.pagination;
+  const pagination = data?.pagination ?? { total: 0 };
 
   const formatCurrency = (amount) =>
     new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(amount || 0);
@@ -130,6 +127,18 @@ const SubscriptionsList = () => {
               )}
             </TableBody>
           </Table>
+          <TablePagination
+            component="div"
+            count={pagination.total}
+            page={page}
+            onPageChange={(_, newPage) => setPage(newPage)}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={(e) => {
+              setRowsPerPage(parseInt(e.target.value, 10));
+              setPage(0);
+            }}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
         </TableContainer>
       </Paper>
 
