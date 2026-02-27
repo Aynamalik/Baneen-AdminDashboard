@@ -12,7 +12,10 @@ import {
   FormControlLabel,
   Link,
   CircularProgress,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from '@mui/icons-material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import AuthLayout from '../../components/layout/AuthLayout';
 import { useAuth } from '../../hooks/useAuth';
@@ -40,6 +43,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated, error, loading } = useAuth();
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -116,12 +120,25 @@ const Login = () => {
         <TextField
           fullWidth
           label="Password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           margin="normal"
           {...register('password')}
           error={!!errors.password}
           helperText={errors.password?.message}
           autoComplete="current-password"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>

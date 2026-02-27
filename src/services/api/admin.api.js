@@ -56,6 +56,14 @@ export const adminApi = {
   getSystemSettings: () => apiClient.get('/admin/system/settings'),
   updateSystemSettings: (settings) => apiClient.put('/admin/system/settings', settings),
 
+  // Admin Profile
+  updateAdminProfile: (data) => apiClient.put('/admin/profile', data),
+  uploadAdminProfilePhoto: (formData) => apiClient.post('/admin/profile/photo', formData),
+
+  // Chatbot Monitoring
+  getChatbotConversations: (params = {}) => apiClient.get('/admin/chatbot/conversations', { params }),
+  getChatbotAnalytics: (params = {}) => apiClient.get('/admin/chatbot/analytics', { params }),
+
   // Payment Management (under /payments route, admin sub-routes)
   getPaymentStats: (params = {}) => apiClient.get('/payments/admin/stats', { params }),
   getAllPayments: (params = {}) => apiClient.get('/payments/admin/all', { params }),
