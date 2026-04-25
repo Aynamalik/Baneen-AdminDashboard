@@ -49,6 +49,14 @@ const UserDetails = () => {
     message: '',
     action: null,
   });
+  const closeConfirmDialog = () => {
+    setConfirmDialog({
+      open: false,
+      title: '',
+      message: '',
+      action: null,
+    });
+  };
 
   // Fetch user details
   const {
@@ -74,24 +82,24 @@ const UserDetails = () => {
   const verifyMutation = useMutation({
     mutationFn: (userId) => adminApi.verifyUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-details', id]);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['user-details', id] });
+      closeConfirmDialog();
     },
   });
 
   const blockMutation = useMutation({
     mutationFn: (userId) => adminApi.blockUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-details', id]);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['user-details', id] });
+      closeConfirmDialog();
     },
   });
 
   const unblockMutation = useMutation({
     mutationFn: (userId) => adminApi.unblockUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-details', id]);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['user-details', id] });
+      closeConfirmDialog();
     },
   });
 
@@ -504,14 +512,14 @@ const UserDetails = () => {
       {/* Confirmation Dialog */}
       <Dialog
         open={confirmDialog.open}
-        onClose={() => setConfirmDialog({ open: false })}
+        onClose={closeConfirmDialog}
       >
         <DialogTitle>{confirmDialog.title}</DialogTitle>
         <DialogContent>
           <Typography>{confirmDialog.message}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialog({ open: false })}>
+          <Button onClick={closeConfirmDialog}>
             Cancel
           </Button>
           <Button

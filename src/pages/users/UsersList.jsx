@@ -57,6 +57,14 @@ const UsersList = () => {
     message: '',
     action: null,
   });
+  const closeConfirmDialog = () => {
+    setConfirmDialog({
+      open: false,
+      title: '',
+      message: '',
+      action: null,
+    });
+  };
 
   // Fetch users with filters
   const {
@@ -78,32 +86,32 @@ const UsersList = () => {
   const verifyMutation = useMutation({
     mutationFn: (userId) => adminApi.verifyUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      closeConfirmDialog();
     },
   });
 
   const blockMutation = useMutation({
     mutationFn: (userId) => adminApi.blockUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      closeConfirmDialog();
     },
   });
 
   const unblockMutation = useMutation({
     mutationFn: (userId) => adminApi.unblockUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      closeConfirmDialog();
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (userId) => adminApi.deleteUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      closeConfirmDialog();
     },
   });
 
@@ -387,14 +395,14 @@ const UsersList = () => {
       {/* Confirmation Dialog */}
       <Dialog
         open={confirmDialog.open}
-        onClose={() => setConfirmDialog({ open: false })}
+        onClose={closeConfirmDialog}
       >
         <DialogTitle>{confirmDialog.title}</DialogTitle>
         <DialogContent>
           <Typography>{confirmDialog.message}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialog({ open: false })}>
+          <Button onClick={closeConfirmDialog}>
             Cancel
           </Button>
           <Button

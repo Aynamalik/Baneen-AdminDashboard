@@ -60,6 +60,14 @@ const DriversList = () => {
     message: '',
     action: null,
   });
+  const closeConfirmDialog = () => {
+    setConfirmDialog({
+      open: false,
+      title: '',
+      message: '',
+      action: null,
+    });
+  };
 
   // Fetch drivers with filters
   const {
@@ -89,18 +97,18 @@ const DriversList = () => {
   const approveMutation = useMutation({
     mutationFn: (driverId) => adminApi.approveDriver(driverId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['drivers']);
-      queryClient.invalidateQueries(['pending-drivers']);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['drivers'] });
+      queryClient.invalidateQueries({ queryKey: ['pending-drivers'] });
+      closeConfirmDialog();
     },
   });
 
   const rejectMutation = useMutation({
     mutationFn: (driverId) => adminApi.rejectDriver(driverId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['drivers']);
-      queryClient.invalidateQueries(['pending-drivers']);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['drivers'] });
+      queryClient.invalidateQueries({ queryKey: ['pending-drivers'] });
+      closeConfirmDialog();
     },
   });
 
@@ -445,14 +453,14 @@ const DriversList = () => {
       {/* Confirmation Dialog */}
       <Dialog
         open={confirmDialog.open}
-        onClose={() => setConfirmDialog({ open: false })}
+        onClose={closeConfirmDialog}
       >
         <DialogTitle>{confirmDialog.title}</DialogTitle>
         <DialogContent>
           <Typography>{confirmDialog.message}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialog({ open: false })}>
+          <Button onClick={closeConfirmDialog}>
             Cancel
           </Button>
           <Button

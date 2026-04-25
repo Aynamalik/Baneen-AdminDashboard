@@ -49,6 +49,14 @@ const DriverDetails = () => {
     message: '',
     action: null,
   });
+  const closeConfirmDialog = () => {
+    setConfirmDialog({
+      open: false,
+      title: '',
+      message: '',
+      action: null,
+    });
+  };
 
   // Fetch driver details (id is driver document _id)
   const {
@@ -72,8 +80,8 @@ const DriverDetails = () => {
   const approveMutation = useMutation({
     mutationFn: (driverId) => adminApi.approveDriver(driverId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['driver-details', id]);
-      setConfirmDialog({ open: false });
+      queryClient.invalidateQueries({ queryKey: ['driver-details', id] });
+      closeConfirmDialog();
     },
   });
 
@@ -484,14 +492,14 @@ const DriverDetails = () => {
       {/* Confirmation Dialog */}
       <Dialog
         open={confirmDialog.open}
-        onClose={() => setConfirmDialog({ open: false })}
+        onClose={closeConfirmDialog}
       >
         <DialogTitle>{confirmDialog.title}</DialogTitle>
         <DialogContent>
           <Typography>{confirmDialog.message}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialog({ open: false })}>
+          <Button onClick={closeConfirmDialog}>
             Cancel
           </Button>
           <Button
